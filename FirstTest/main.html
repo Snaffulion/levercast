@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <tile>File Drop Text Reader</title>
+    <style>
+        #drop-zone {
+            width: 200px;
+            height: 200px;
+            border: 2px dashed #ccc;
+            text-align: center;
+            padding: 20px;
+            margin: 20px;
+        }
+        #drop-zone.dragover {
+            background-color: #e1e1e1;
+            border-color: #999;
+        }
+        #output {
+            margin: 40px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            min-height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div id="drop-zone">
+        Drop your text file here
+    </div>
+    <div id="output"></div>
+    <button id="exportBtn" style="margin: 20px; display: none;">Export to CSV</button>
+
+    <script>
+        // Get references to the drop zone and output elements from the DOM
+        const dropZone = document.getElementById('drop-zone');
+        const output = document.getElementById('output');
+        const exportBtn = document.getElementById('exportBtn');
+
+        // This section prevents the browser's default drag and drop behavior
+        // which would otherwise try to open the file directly
+        // We apply these preventions to both the drop zone and the entire document body
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, preventDefaults, false);
+            document.body.addEventListener(eventName, preventDefaults, false);
+        });
+
+        // When a file is dragged over the drop zone, we want to highlight it
+        // These events trigger when the file enters or hovers over the zone
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, highlight, false);
+        });
+
+        // When the file leaves the drop zone or is dropped, remove the highlight
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, unhighlight, false);
+        });
+
+        // Set up the main file drop handler
+        dropZone.addEventListener('drop', handleDrop, false);
+
+        // This utility function prevents the default browser behavior
+        // and stops the event from bubbling up to parent elements
+        function preventDefaults (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        function highlight(e) {
+            dropZone.classList.add('dragover');
+        }
+
+        function unhighlight(e) {
+            dropZone.classList.remove('dragover');
+        }
+
+        function handleDrop(e) {
+            // Get the DataTransfer object from the drop event
+            const dt = e.dataTransfer;
+            // Extract the files that were dropped from the DataTransfer object
+            const files = dt.files;
+            // Log the files array to the console for debugging
+            console.log(files); 
+            // Pass the files array to handleFiles() - note that handleFiles will take the first file (files[0])
+            handleFiles(files);
+        }
+
+        // This function handles the files dropped into the drop zone
+        // It takes the first file from the files array, creates a FileReader to read it,
+        // and displays its contents in the output element.
+        // When the file is loaded, it also makes the export button visible.
+        function handleFiles(files) {
+            const file = files[0];  // Get the first dropped file
+            const reader = new FileReader();  // Create FileReader instance
+            console.log(file);  // Log file info for debugging
+            
+            reader.onload = function(e) {
+                output.textContent = e.target.result;  // Display file contents
+                exportBtn.style.display = 'block';  // Show export button when file is loaded
+            };
+
+            reader.readAsText(file);
+        }
+
+        // Add export functionality
+        exportBtn.addEventListener('click', function() {
+            const content = output.textContent;
+            if (!content) return;
+
+            // Clean up the content
+            const cleanContent = content
+                .replace(/\r\n/g, '\n')  // Convert Windows line endings to Unix
+                .replace(/\r/g, '\n')    // Convert remaining carriage returns to newlines
+                .trim();                 // Remove leading/trailing whitespace
+
+            // Create CSV blob
+            const blob = new Blob([cleanContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            
+            // Create download link
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'exported_data.csv';
+            
+            // Trigger download
+            document.body.appendChild(a);
+            a.click();
+            
+            // Cleanup
+            windiow.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        });
+    </script>
+</body>
+</html>
