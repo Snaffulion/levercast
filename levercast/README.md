@@ -1,17 +1,32 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Levercast
+
+A modern web-based application for transforming and publishing content across multiple social media platforms.
+
+## Features
+
+- Content transformation with LLM integration
+- Multi-platform social media publishing
+- Template management
+- Scheduled posting
+- Analytics tracking
+
+## Tech Stack
+
+- Next.js
+- React
+- Tailwind CSS with shadcn/ui
+- TypeScript
+- Clerk Auth (coming soon)
+- Supabase (coming soon)
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+# Install dependencies
+npm install
+
+# Run the development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
