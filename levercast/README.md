@@ -1,6 +1,6 @@
 # Levercast
 
-A modern web-based application for transforming and publishing content across multiple social media platforms.
+A modern web-based application for transforming and publishing content across multiple social media platforms. Here is an additional change to test.
 
 ## Features
 
@@ -21,12 +21,20 @@ A modern web-based application for transforming and publishing content across mu
 
 ## Getting Started
 
+First, run the development server:
+
 ```bash
 # Install dependencies
 npm install
 
 # Run the development server
 npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
@@ -49,3 +57,17 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Development
+
+### Commit Messages
+
+We follow a standardized commit message format:
+
+- `Feat(component):` - New features
+- `Fix(api):` - Bug fixes
+- `Docs(readme):` - Documentation changes
+- `Style(tailwind):` - Styling changes
+- `Refactor(utils):` - Code refactoring
+- `Test(unit):` - Adding tests
+- `Chore(deps):` - Dependency updates
